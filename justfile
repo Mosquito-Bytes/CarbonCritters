@@ -11,7 +11,7 @@ default:
 
 fe_init:
     npm i -g pnpm@latest;
-    pnpm install;
+    cd {{join(justfile_directory(), fe_dir)}}; pnpm install;
 
 # Start mock server
 fe_start_mocks:
