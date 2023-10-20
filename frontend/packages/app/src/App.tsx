@@ -17,27 +17,27 @@ const App = memo(function App() {
   const handleIncrement = useCallback(() => {
     dispatch({
       type: "ws/client/send",
-      payload: { type: "increment-counter" },
+      payload: { type: "ws/server/increment-counter" },
     });
   }, [dispatch]);
   const handleDecrement = useCallback(() => {
     dispatch({
       type: "ws/client/send",
-      payload: { type: "decrement-counter" },
+      payload: { type: "ws/server/decrement-counter" },
     });
   }, [dispatch]);
 
   useEffect(() => {
     const getOnMyCallStack = setTimeout(() => {
       if (!connected) {
-        dispatch(connect());
+        handleConnect();
       }
     }, 0);
 
     return () => {
+      clearTimeout(getOnMyCallStack);
       if (connected) {
-        clearTimeout(getOnMyCallStack);
-        dispatch(disconnect());
+        handleDisconnect();
       }
     };
   }, []);

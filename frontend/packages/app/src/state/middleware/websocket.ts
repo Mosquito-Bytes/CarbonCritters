@@ -20,7 +20,6 @@ export const websocketMiddleware =
 
 				websocket.on("open", () => {});
 				websocket.on("message", (event) => {
-					console.log("message received: ", event);
 					dispatch(JSON.parse((event as MessageEvent).data));
 				});
 				websocket.on("close", () => {});
