@@ -33,5 +33,5 @@ jobs:
       run: |
         pushd backend
         docker build -t ghcr.io/Mosquito-Bytes/carbon-criters-backend:latest .
-        docker push ghcr.io/Mosquito-Bytes/carbon-criters-backend:latest
+        docker push ghcr.io/mosquito-bytes/carbon-criters-backend:latest
         popd
