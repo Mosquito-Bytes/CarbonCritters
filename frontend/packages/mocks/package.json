@@ -1,0 +1,8 @@
+{
+  "name": "mocks",
+  "version": "1.0.0",
+  "dependencies": {
+    "@faker-js/faker": "^8.2.0",
+    "@mocks-server/main": "^4.1.0"
+  }
+}
