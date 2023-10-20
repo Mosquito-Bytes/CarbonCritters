@@ -21,7 +21,7 @@ const heartbeat = (wss) => {
 
   setTimeout(() => {
     heartbeat(wss);
-  }, 5000);
+  }, 10_000);
 };
 
 const handleMessage = (ws) => (message) => {
