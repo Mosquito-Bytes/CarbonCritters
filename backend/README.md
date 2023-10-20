@@ -13,4 +13,4 @@ On Linux/MacOS run
 To build and run the Docker image
 
     docker build -t carbon-criters-backend:latest .
-    docker run -p 8080:8080 carbon-criters-backend:latest
+    docker run --rm v-p 8080:8080 carbon-criters-backend:latest
