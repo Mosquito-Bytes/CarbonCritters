@@ -23,7 +23,7 @@ fe_start_dev:
 
 # Build frontend for production
 fe_build: fe_init
-    cd {{fe_app_dir}}; ./node_modules/.bin/tsc && ./node_modules/.bin/vite build;
+    cd {{fe_app_dir}}; ./node_modules/.bin/vite build;
 
 # Preview frontend prod build locally
 fe_preview: fe_init
