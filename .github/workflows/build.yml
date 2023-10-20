@@ -8,8 +8,8 @@ permissions:
   packages: write
 
 jobs:
-  build-backend:
-    name: Build the backend
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -18,11 +18,22 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-    - name: Build with Gradle
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'        
+    - name: Build the backend
       uses: gradle/gradle-build-action@v2
       with:
         build-root-directory: backend
         arguments: build
+    - name: Build the frontend
+      run: |
+        pushd frontend
+        npm install
+        ./node_modules/.bin/tsc && ./node_modules/.bin/vite build;
+        popd
     - name: Docker login
       uses: docker/login-action@v3
       with:
@@ -34,4 +45,10 @@ jobs:
         pushd backend
         docker build -t ghcr.io/mosquito-bytes/carbon-criters-backend:latest .
         docker push ghcr.io/mosquito-bytes/carbon-criters-backend:latest
+        popd
+    - name: Build and push frontend docker image
+      run: |
+        pushd frontend
+        docker build -t ghcr.io/mosquito-bytes/carbon-criters-frontend:latest .
+        docker push ghcr.io/mosquito-bytes/carbon-criters-frontend:latest
         popd
