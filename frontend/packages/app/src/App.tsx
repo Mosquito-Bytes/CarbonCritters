@@ -1,5 +1,17 @@
+import { useEffect } from "react";
+import { connect, disconnect } from "./state/slices/websocket";
+import { useAppDispatch } from "./hooks/hooks";
 function App() {
-    return (<>Hello</>);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(connect());
+
+    return () => {
+      dispatch(disconnect());
+    };
+  }, [dispatch]);
+  return <>Hello</>;
 }
 
 export default App;
