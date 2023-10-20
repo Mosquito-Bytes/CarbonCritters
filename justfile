@@ -15,7 +15,7 @@ fe_init:
 
 # Start mock server
 fe_start_mocks:
-    cd {{fe_mocks_dir}}; ./node_modules/.bin/mocks-server;
+    cd {{fe_mocks_dir}}; node server.js;
 
 # Start development server
 fe_start_dev:
