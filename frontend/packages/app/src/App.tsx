@@ -1,16 +1,27 @@
 import { useEffect } from "react";
 import { connect, disconnect } from "./state/slices/websocket";
-import { useAppDispatch } from "./hooks/hooks";
+import { useAppDispatch, useAppSelector } from "./hooks/hooks";
+
 function App() {
   const dispatch = useAppDispatch();
+  const { connected } = useAppSelector((state) => state.websocket);
 
   useEffect(() => {
-    dispatch(connect());
+    const timer = setTimeout(() => {
+      if (!connected) {
+        dispatch(connect());
+      }
+    }, 0);
 
     return () => {
-      dispatch(disconnect());
+      clearTimeout(timer);
+
+      if (connected) {
+        dispatch(disconnect());
+      }
     };
-  }, [dispatch]);
+  }, [dispatch, connected]);
+
   return <>Hello</>;
 }
 

@@ -1,19 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
 
-interface CounterState {}
+interface WebsocketState {
+	connected: boolean;
+}
 
-const initialState = {} as CounterState;
+const initialState = { connected: false } as WebsocketState;
 
 const websocketSlice = createSlice({
 	name: "websocket",
 	initialState,
 	reducers: {
 		connect(state) {
-			return state;
+			state.connected = true;
 		},
 		disconnect(state) {
-			return state;
+			state.connected = false;
 		},
 	},
 });
