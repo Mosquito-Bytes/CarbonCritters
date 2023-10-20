@@ -16,7 +16,7 @@ export const websocketMiddleware =
 				websocket.connect(CarbonCritterSocketUrl);
 
 				websocket.on("open", () => {});
-				websocket.on("message", (data: unknown) => {
+				websocket.on("message", (data: MessageEvent) => {
 					console.log(data);
 				});
 				websocket.on("close", () => {});

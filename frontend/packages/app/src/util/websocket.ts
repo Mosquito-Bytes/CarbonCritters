@@ -24,9 +24,9 @@ class Socket {
 		}
 	}
 
-	on(eventName: string, callback: (...args: unknown[]) => void) {
+	on(...args: Parameters<typeof WebSocket.prototype.addEventListener>) {
 		if (this.socket) {
-			this.socket.addEventListener(eventName, callback);
+			this.socket.addEventListener(...args);
 		}
 	}
 }
