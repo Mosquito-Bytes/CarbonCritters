@@ -9,6 +9,10 @@ default:
 # -----
 # frontend start
 
+fe_init:
+    npm i -g pnpm@latest;
+    pnpm install;
+
 # Start mock server
 fe_start_mocks:
     cd {{fe_mocks_dir}}; ./node_modules/.bin/mocks-server;
@@ -18,11 +22,11 @@ fe_start_dev:
     cd {{fe_app_dir}}; ./node_modules/.bin/vite;
 
 # Build frontend for production
-fe_build:
+fe_build: fe_init
     cd {{fe_app_dir}}; ./node_modules/.bin/tsc && ./node_modules/.bin/vite build;
 
 # Preview frontend prod build locally
-fe_preview:
+fe_preview: fe_init
     cd {{fe_app_dir}}; ./node_modules/.bin/vite preview;
 
 # Start mocks and dev server
