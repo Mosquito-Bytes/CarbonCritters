@@ -25,7 +25,7 @@ const heartbeat = (wss) => {
 };
 
 function mockUser(opts) {
-    const { userId, score, name} = opts || {};
+  const { userId, score, name } = opts || {};
 
   return {
     userId: userId || faker.number.int({ min: 10, max: 1000 }),
@@ -37,7 +37,12 @@ function mockUser(opts) {
   };
 }
 
-let defaultUsers = [mockUser({userId: 0, score: { total: 0, diff: 0}}), mockUser({ userId: 1, score: { total: 10, diff: 10 } }), mockUser({ userId: 2, score: { total: -10, diff: -10 }}), mockUser()];
+let defaultUsers = [
+  mockUser({ userId: 0, score: { total: 0, diff: 0 } }),
+  mockUser({ userId: 1, score: { total: 10, diff: 10 } }),
+  mockUser({ userId: 2, score: { total: -10, diff: -10 } }),
+  mockUser(),
+];
 
 function mockLeaderBoard() {
   const board = [...defaultUsers];
