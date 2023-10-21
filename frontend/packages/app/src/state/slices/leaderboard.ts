@@ -1,16 +1,16 @@
 import { createSlice, PayloadAction, createAction } from "@reduxjs/toolkit";
 
-type Score = {
+export type Score = {
 	total: number;
 	diff: number;
 };
-type LeaderboardItem = {
+export type LeaderboardItem = {
 	userId: number;
 	name: string;
 	score: Score;
 };
 
-interface LeaderboardState {
+export interface LeaderboardState {
 	items: LeaderboardItem[];
 }
 
@@ -31,5 +31,4 @@ const leaderboardSlice = createSlice({
 	},
 });
 
-export const { setItems } = leaderboardSlice.actions;
 export default leaderboardSlice.reducer;

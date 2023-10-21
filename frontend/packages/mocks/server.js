@@ -1,3 +1,4 @@
+const url = require("url");
 const express = require("express");
 const http = require("http");
 const WebSocket = require("ws");
@@ -64,33 +65,16 @@ const leaderboard = (wss) => {
 
   setTimeout(() => {
     leaderboard(wss);
-  }, 3000);
+  }, 30000);
 };
 
 const handleMessage = (ws) => (message) => {
   try {
     const m = message.toString();
     const p = JSON.parse(m);
+    console.log(p);
 
     switch (true) {
-      case p.type === "ws/server/increment-counter":
-        counter++;
-        ws.send(
-          JSON.stringify({
-            type: "ws/client/report-counter",
-            payload: counter,
-          }),
-        );
-        break;
-      case p.type === "ws/server/decrement-counter":
-        counter--;
-        ws.send(
-          JSON.stringify({
-            type: "ws/client/report-counter",
-            payload: counter,
-          }),
-        );
-        break;
       default:
         ws.send(
           JSON.stringify({
@@ -105,9 +89,16 @@ const handleMessage = (ws) => (message) => {
   }
 };
 
-wss.on("connection", (ws) => {
+wss.on("connection", (ws, req) => {
   console.log("Client connected");
   console.log(`Total connected clients: ${wss.clients.size}`);
+
+  const parsedUrl = url.parse(req.url, true);
+  const { userId } = parsedUrl.query;
+
+  ws.send(
+    JSON.stringify({ type: "ws/server/user", payload: defaultUsers[userId] }),
+  );
 
   // Handle messages received from the client
   ws.on("message", (message) => {

@@ -4,34 +4,38 @@ import { motion, AnimatePresence, useIsPresent } from "framer-motion";
 import { useAppSelector } from "../../hooks/hooks";
 
 const ItemWrapper = styled(motion.li)`
-  border: 1px solid blue;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: 10px 20px;
+  background-color: var(--color-copy);
+  color: var(--color-page-background);
+  border-radius: 0.25rem;
+
+  & + & {
+    margin-top: 0.25rem;
+  }
 `;
 ItemWrapper.defaultProps = {
   layout: true,
 };
 const ItemRank = styled.p`
-  border: 1px solid yellow;
   margin: 0;
+  margin-right: 1em;
 `;
 const ItemUserName = styled.p`
-  border: 1px solid purple;
   margin: 0;
+  margin-right: 1rem;
+  font-family: var(--font-family-guerilla);
 `;
 const ItemScoreWrapper = styled.p`
-  border: 1px solid green;
   margin: 0;
+  margin-left: auto;
+  padding-left: 1em;
 `;
-const ItemScoreTotal = styled.span`
-  border: 1px solid red;
-`;
-const ItemScoreDiff = styled.span`
-  border: 1px solid gold;
-`;
+const ItemScoreTotal = styled.span``;
+const ItemScoreDiff = styled.span``;
 
 const LeaderboardItem: React.FC<{
   rank: number;
@@ -65,28 +69,29 @@ const LeaderboardItem: React.FC<{
 const LeaderboardContainer = styled(motion.ol)`
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 1rem;
 `;
+
+const LeaderboardHeading = styled.h2``;
 
 const Leaderboard: React.FC = () => {
   const items = useAppSelector((state) => state.leaderboard.items);
 
-  if (!items.length) {
-    return null;
-  }
-
   return (
     <LeaderboardContainer>
+      <LeaderboardHeading>Leaderboard</LeaderboardHeading>
       <AnimatePresence>
-        {items.map((item, i) => (
-          <LeaderboardItem
-            key={item.userId}
-            name={item.name || item.userId.toString()}
-            rank={i + 1}
-            score={item.score.total}
-            diff={item.score.diff}
-          />
-        ))}
+        {items.length &&
+          items.map((item, i) => (
+            <LeaderboardItem
+              key={item.userId}
+              name={item.name || item.userId.toString()}
+              rank={i + 1}
+              score={item.score.total}
+              diff={item.score.diff}
+            />
+          ))}
+        {!items.length && <h3>Loading...</h3>}
       </AnimatePresence>
     </LeaderboardContainer>
   );

@@ -3,16 +3,15 @@ import websocketMiddleware from "./state/middleware/websocket";
 import Socket from "./util/websocket";
 import { default as websocketReducer } from "./state/slices/websocket";
 import { default as leaderboardReducer } from "./state/slices/leaderboard";
+import { default as userReducer } from "./state/slices/user";
 
 const store = configureStore({
 	reducer: {
 		websocket: websocketReducer,
 		leaderboard: leaderboardReducer,
+		user: userReducer,
 	},
-	middleware: (getDefaultMiddleware) => [
-		...getDefaultMiddleware(),
-		websocketMiddleware(new Socket()),
-	],
+	middleware: () => [websocketMiddleware(new Socket())],
 	devTools: true,
 });
 

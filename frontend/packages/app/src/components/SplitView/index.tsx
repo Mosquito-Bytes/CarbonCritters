@@ -2,11 +2,11 @@ import styled from "styled-components";
 import React from "react";
 
 const Wrapper = styled.div`
-  border: 1px solid green;
+  display: grid;
+  grid-template-areas: "left" "right";
 `;
-const Split = styled.div`
-  border: 1px solid red;
-`;
+
+const Split = styled.div``;
 
 const SplitView: React.FC<{
   left: React.ReactElement;

@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 interface WebsocketState {
 	connected: boolean;
@@ -10,7 +10,7 @@ const websocketSlice = createSlice({
 	name: "ws/client",
 	initialState,
 	reducers: {
-		connect(state) {
+		connect(state, action: PayloadAction<URL>) {
 			state.connected = true;
 		},
 		disconnect(state) {

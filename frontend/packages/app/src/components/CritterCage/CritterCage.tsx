@@ -5,21 +5,21 @@ import critter from "../../assets/Critter_Animations-2.json";
 
 const Wrapper = styled.div`
   position: relative;
-  border: 1px solid red;
 `;
 
 const CritterName = styled.h1`
-  border: 1px solid blue;
+  padding: 0 1rem;
 `;
 
 const CritterLayer = styled.div`
-  border: 1px solid green;
+  background-color: white;
+  overflow: hidden;
 `;
 
 const CritterCage: React.FC = () => {
   return (
     <Wrapper>
-      <CritterName>Critter Name</CritterName>
+      <CritterName>Boncar the Fluffy</CritterName>
       <CritterLayer>
         <Lottie animationData={critter} />
       </CritterLayer>

@@ -11,24 +11,14 @@ const App = memo(function App() {
   const { connected } = useAppSelector((state) => state.websocket);
 
   const handleConnect = useCallback(() => {
-    dispatch(connect());
+    const currentUserId = new URL(window.location.href).searchParams;
+    const targetSocketUrl = new URL("ws://localhost:8080?userId=0");
+    targetSocketUrl.searchParams.set("userId", currentUserId.get("userId"));
+    dispatch(connect(targetSocketUrl));
   }, [dispatch]);
 
   const handleDisconnect = useCallback(() => {
     dispatch(disconnect());
-  }, [dispatch]);
-
-  const handleIncrement = useCallback(() => {
-    dispatch({
-      type: "ws/client/send",
-      payload: { type: "ws/server/increment-counter" },
-    });
-  }, [dispatch]);
-  const handleDecrement = useCallback(() => {
-    dispatch({
-      type: "ws/client/send",
-      payload: { type: "ws/server/decrement-counter" },
-    });
   }, [dispatch]);
 
   useEffect(() => {

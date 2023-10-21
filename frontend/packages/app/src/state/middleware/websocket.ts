@@ -1,7 +1,5 @@
-import { Action, Dispatch, PayloadAction } from "@reduxjs/toolkit";
+import { Dispatch, PayloadAction } from "@reduxjs/toolkit";
 import Socket from "../../util/websocket";
-
-const CarbonCritterSocketUrl = new URL("ws://localhost:8080");
 
 export const websocketMiddleware =
 	(websocket: Socket) =>
@@ -11,18 +9,22 @@ export const websocketMiddleware =
 	}) =>
 	(next: (action: PayloadAction<unknown>) => void) =>
 	(action: PayloadAction<unknown>) => {
-		const { dispatch, getState } = params;
-		const { type } = action;
+		const { dispatch } = params;
+		const { type, payload } = action;
 
 		switch (type) {
 			case "ws/client/connect":
-				websocket.connect(CarbonCritterSocketUrl);
+				websocket.connect(new URL(payload as URL));
 
-				websocket.on("open", () => {});
+				websocket.on("open", () => {
+					console.log("socket opened");
+				});
 				websocket.on("message", (event) => {
 					dispatch(JSON.parse((event as MessageEvent).data));
 				});
-				websocket.on("close", () => {});
+				websocket.on("close", () => {
+					console.log("socket closed");
+				});
 				break;
 
 			case "ws/client/disconnect":
