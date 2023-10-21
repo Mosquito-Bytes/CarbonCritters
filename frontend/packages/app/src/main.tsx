@@ -4,6 +4,7 @@ import App from "./App.tsx";
 import store from "./store";
 import { Provider } from "react-redux";
 import "normalize.css";
+import "./assets/guerilla-font/stylesheet.css";
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`

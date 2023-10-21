@@ -12,7 +12,7 @@ const App = memo(function App() {
 
   const handleConnect = useCallback(() => {
     const currentUserId = new URL(window.location.href).searchParams;
-    const targetSocketUrl = new URL("ws://carboncritters-r4tyfpczpq-ez.a.run.app");
+    const targetSocketUrl = new URL("wss://carboncritters-r4tyfpczpq-ez.a.run.app");
     targetSocketUrl.searchParams.set("userId", currentUserId.get("userId"));
     dispatch(connect(targetSocketUrl));
   }, [dispatch]);
