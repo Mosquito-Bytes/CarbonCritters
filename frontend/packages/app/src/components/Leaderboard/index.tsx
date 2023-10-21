@@ -35,7 +35,12 @@ const ItemScoreWrapper = styled.p`
   padding-left: 1em;
 `;
 const ItemScoreTotal = styled.span``;
-const ItemScoreDiff = styled.span``;
+const ItemScoreDiff = styled.sup<{ diff: number }>`
+  display: sub;
+  ${(props) => (props.diff > 0 ? "color: var(--color-robinegg-blue);" : "")}
+  ${(props) => (props.diff === 0 ? "display: none;" : "")}
+    ${(props) => (props.diff < 0 ? "color: var(--color-imperial-red);" : "")}
+`;
 
 const LeaderboardItem: React.FC<{
   rank: number;
@@ -59,8 +64,11 @@ const LeaderboardItem: React.FC<{
       <ItemRank>#{rank}</ItemRank>
       <ItemUserName>{name}</ItemUserName>
       <ItemScoreWrapper>
-        <ItemScoreTotal>{score}</ItemScoreTotal>
-        <ItemScoreDiff>({diff})</ItemScoreDiff>
+        <ItemScoreTotal>{score}</ItemScoreTotal>{" "}
+        <ItemScoreDiff diff={diff}>
+          {diff >= 0 ? "+" : ""}
+          {diff}
+        </ItemScoreDiff>
       </ItemScoreWrapper>
     </ItemWrapper>
   );

@@ -24,12 +24,28 @@ const heartbeat = (wss) => {
   }, 10_000);
 };
 
+const critters = {
+  0: {
+    id: 0,
+    name: "Boncar the Fluffy",
+  },
+  1: {
+    id: 1,
+    name: "Hirsute Harry",
+  },
+  2: {
+    id: 2,
+    name: "Zalgo the Destroyer",
+  },
+};
+
 function mockUser(opts) {
   const { userId, score, name } = opts || {};
 
   return {
     userId: userId || faker.number.int({ min: 10, max: 1000 }),
     name: name || faker.person.fullName(),
+    critter: faker.helpers.arrayElement(Object.values(critters)),
     score: score || {
       total: 0,
       diff: 0,
@@ -38,9 +54,19 @@ function mockUser(opts) {
 }
 
 let defaultUsers = [
-  mockUser({ userId: 0, score: { total: 0, diff: 0 } }),
-  mockUser({ userId: 1, score: { total: 10, diff: 10 } }),
-  mockUser({ userId: 2, score: { total: -10, diff: -10 } }),
+  mockUser({ userId: 0, score: { total: 0, diff: 0 }, critter: critters[0] }),
+  mockUser({ userId: 1, score: { total: 10, diff: 10 }, critter: critters[1] }),
+  mockUser({
+    userId: 2,
+    score: { total: -10, diff: -10 },
+    critter: critters[2],
+  }),
+  mockUser(),
+  mockUser(),
+  mockUser(),
+  mockUser(),
+  mockUser(),
+  mockUser(),
   mockUser(),
 ];
 
@@ -48,9 +74,9 @@ function mockLeaderBoard() {
   const board = [...defaultUsers];
 
   const result = {
-    type: "ws/server/leaderboard",
+    type: "ws/server/leaderBoard",
     payload: {
-      users: faker.helpers.shuffle(board),
+      users: board,
     },
   };
 
@@ -78,6 +104,7 @@ const handleMessage = (ws) => (message) => {
     const m = message.toString();
     const p = JSON.parse(m);
 
+    // Here we can deal with any messages the client sends.
     switch (true) {
       default:
         ws.send(
