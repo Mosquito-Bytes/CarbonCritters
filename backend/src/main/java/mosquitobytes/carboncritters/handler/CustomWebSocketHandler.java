@@ -50,6 +50,8 @@ public class CustomWebSocketHandler implements WebSocketHandler {
         response.setType("ws/server/user");
         response.setPayload(this.profileService.getProfile(Long.parseLong(userId.get(0))));
         session.sendMessage(new TextMessage(convertToJson(response)));
+
+        sendLeaderBoard(session);
     }
 
     @Override
@@ -61,11 +63,15 @@ public class CustomWebSocketHandler implements WebSocketHandler {
 
     public void sendLeaderBoardToAllActiveSessions() throws IOException {
         for (WebSocketSession activeSession : this.activeSessions.values()) {
-            CustomWebSocketResponse<LeaderBoard> response = new CustomWebSocketResponse<LeaderBoard>();
-            response.setType("ws/server/leaderBoard");
-            response.setPayload(this.leaderBoardService.getLeaderBoardUsers());
-            activeSession.sendMessage(new TextMessage(convertToJson(response)));
+            sendLeaderBoard(activeSession);
         }
+    }
+
+    public void sendLeaderBoard(WebSocketSession session) throws IOException {
+        CustomWebSocketResponse<LeaderBoard> response = new CustomWebSocketResponse<LeaderBoard>();
+        response.setType("ws/server/leaderBoard");
+        response.setPayload(this.leaderBoardService.getLeaderBoardUsers());
+        session.sendMessage(new TextMessage(convertToJson(response)));
     }
 
     private String convertToJson(CustomWebSocketResponse response) throws JsonProcessingException {
