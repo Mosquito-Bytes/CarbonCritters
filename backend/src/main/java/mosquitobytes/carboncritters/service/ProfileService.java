@@ -1,18 +1,28 @@
 package mosquitobytes.carboncritters.service;
 
 import lombok.extern.slf4j.Slf4j;
+import mosquitobytes.carboncritters.handler.CustomWebSocketHandler;
 import mosquitobytes.carboncritters.model.Profile;
 import mosquitobytes.carboncritters.model.Score;
 import mosquitobytes.carboncritters.repository.ProfileRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 @Slf4j
 @Service
 public class ProfileService {
 
-    @Autowired
-    private ProfileRepository profileRepository;
+    private final CustomWebSocketHandler webSocketHandler;
+
+    private final ProfileRepository profileRepository;
+
+    public ProfileService(@Lazy CustomWebSocketHandler webSocketHandler, ProfileRepository profileRepository) {
+        this.webSocketHandler = webSocketHandler;
+        this.profileRepository = profileRepository;
+    }
+
     public Profile getProfile(Long id) {
         log.info("Inside Profile.getProfile method.");
 
@@ -24,6 +34,24 @@ public class ProfileService {
         var newScore = profile.score().total() + delta;
 
         var updatedProfile = new Profile(id, profile.userName(), newScore,new Score(newScore, delta));
+
+        profileRepository.save(updatedProfile);
+    }
+
+    public void resetScore() {
+        var profiles = profileRepository.findAll();
+
+        profiles.forEach(this::resetScore);
+
+        try {
+            webSocketHandler.sendLeaderBoardToAllActiveSessions();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void resetScore(Profile profile) {
+        var updatedProfile = new Profile(profile.id(), profile.userName(), 0.0, new Score(0.0, 0.0));
 
         profileRepository.save(updatedProfile);
     }
