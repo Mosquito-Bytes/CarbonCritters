@@ -24,7 +24,7 @@ jobs:
         node-version: 18
     - name: Build the frontend
       run: |
-        just fe_build
+        NODE_OPTIONS=--max-old-space-size=8192 just fe_build
         pushd frontend/packages/app/dist/
         mv CarbonCritters/* .
         popd
