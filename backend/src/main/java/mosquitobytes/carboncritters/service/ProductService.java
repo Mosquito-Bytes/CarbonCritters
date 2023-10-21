@@ -5,17 +5,18 @@ import mosquitobytes.carboncritters.model.ConsumedProduct;
 import mosquitobytes.carboncritters.repository.ConsumedProductRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.ZonedDateTime;
-
 @Service
 public class ProductService {
 
     private final ConsumedProductRepository consumedProducts;
 
+    private final ProfileService profileService;
+
     private final ProductDatabaseConnector productDatabase;
 
-    public ProductService(ConsumedProductRepository consumedProducts, ProductDatabaseConnector productDatabase) {
+    public ProductService(ConsumedProductRepository consumedProducts, ProfileService profileService, ProductDatabaseConnector productDatabase) {
         this.consumedProducts = consumedProducts;
+        this.profileService = profileService;
         this.productDatabase = productDatabase;
     }
 
@@ -24,6 +25,8 @@ public class ProductService {
         var consumedProduct = new ConsumedProduct(consumerId, product);
 
         consumedProducts.save(consumedProduct);
+
+        profileService.updateScore(consumerId, consumedProduct.product().footprint());
     }
 
 }
