@@ -1,6 +1,10 @@
 import { useEffect, memo, useCallback } from "react";
 import { connect, disconnect, echo } from "./state/slices/websocket";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
+import AppFrame from "./components/AppFrame";
+import SplitView from "./components/SplitView";
+import CritterCage from "./components/CritterCage/CritterCage";
+import Leaderboard from "./components/Leaderboard";
 
 const App = memo(function App() {
   const dispatch = useAppDispatch();
@@ -43,7 +47,14 @@ const App = memo(function App() {
   }, []);
 
   return (
-    <>
+    <AppFrame>
+      <SplitView left={<CritterCage />} right={<Leaderboard />} />
+    </AppFrame>
+  );
+
+  /*
+  return (
+    <AppFrame>
       <button onClick={handleConnect} disabled={connected}>
         connect
       </button>
@@ -56,8 +67,9 @@ const App = memo(function App() {
       <button onClick={handleIncrement} disabled={!connected}>
         increment
       </button>
-    </>
+    </AppFrame>
   );
+  */
 });
 
 export default App;
