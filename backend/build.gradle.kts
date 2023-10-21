@@ -16,9 +16,14 @@ repositories {
 }
 
 dependencies {
+	implementation(platform("com.google.cloud:spring-cloud-gcp-dependencies:4.8.0"))
+
 	// implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-websocket")
+	implementation("org.springframework.boot:spring-boot-starter-webflux")
+	implementation("com.google.cloud:spring-cloud-gcp-starter-data-datastore")
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	// testImplementation("org.springframework.security:spring-security-test")
 }
