@@ -25,6 +25,9 @@ jobs:
     - name: Build the frontend
       run: |
         just fe_build
+        pushd frontend/packages/app/dist/
+        mv CarbonCritters/* .
+        popd
     - name: Configure GitHub Pages
       uses: actions/configure-pages@v3
     - name: Upload static resources artifact
