@@ -11,5 +11,5 @@ import java.util.ArrayList;
 @ToString
 public class LeaderBoard {
 
-    ArrayList<Profile> users;
+    ArrayList<Profile> users = new ArrayList<>();
 }
