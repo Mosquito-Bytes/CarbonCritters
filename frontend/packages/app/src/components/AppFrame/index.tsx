@@ -10,18 +10,16 @@ const CarbonCritters = styled.h1`
 
   .fairandbalanced {
     font-size: 0.5em;
-}
+  }
 `;
 CarbonCritters.defaultProps = {
-    // Don't ask me what the fuck is going on in this html. It's 1AM and I'm tired.
+  // Don't ask me what the fuck is going on in this html. It's 1AM and I'm tired.
   children: (
     <span>
-&#9733;
-    &#9829;{" "}
-      <span className="carbon">C</span>arbon <span className="critters">C</span>
-      ritters<span className="fairandbalanced">&#8482;&#169;</span> &#9829; 
-&#9733;
-
+      &#9733; &#9829; <span className="carbon">C</span>arbon{" "}
+      <span className="critters">C</span>
+      ritters<span className="fairandbalanced">&#8482;&#169;</span> &#9829;
+      &#9733;
     </span>
   ),
 };
