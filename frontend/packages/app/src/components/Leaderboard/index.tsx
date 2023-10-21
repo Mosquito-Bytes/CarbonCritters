@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { motion, AnimatePresence, useIsPresent } from "framer-motion";
+import { useAppSelector } from "../../hooks/hooks";
 
 const ItemWrapper = styled(motion.li)`
   border: 1px solid blue;
@@ -32,7 +33,12 @@ const ItemScoreDiff = styled.span`
   border: 1px solid gold;
 `;
 
-const LeaderboardItem: React.FC = () => {
+const LeaderboardItem: React.FC<{
+  rank: number;
+  name: string;
+  score: number;
+  diff: number;
+}> = ({ rank, name, score, diff }) => {
   const isPresent = useIsPresent();
   const animations = {
     style: {
@@ -46,11 +52,11 @@ const LeaderboardItem: React.FC = () => {
 
   return (
     <ItemWrapper {...animations}>
-      <ItemRank>#1</ItemRank>
-      <ItemUserName>User Name</ItemUserName>
+      <ItemRank>#{rank}</ItemRank>
+      <ItemUserName>{name}</ItemUserName>
       <ItemScoreWrapper>
-        <ItemScoreTotal>1337</ItemScoreTotal>
-        <ItemScoreDiff>(+37)</ItemScoreDiff>
+        <ItemScoreTotal>{score}</ItemScoreTotal>
+        <ItemScoreDiff>({diff})</ItemScoreDiff>
       </ItemScoreWrapper>
     </ItemWrapper>
   );
@@ -63,13 +69,24 @@ const LeaderboardContainer = styled(motion.ol)`
 `;
 
 const Leaderboard: React.FC = () => {
+  const items = useAppSelector((state) => state.leaderboard.items);
+
+  if (!items.length) {
+    return null;
+  }
+
   return (
     <LeaderboardContainer>
       <AnimatePresence>
-        <LeaderboardItem />
-        <LeaderboardItem />
-        <LeaderboardItem />
-        <LeaderboardItem />
+        {items.map((item, i) => (
+          <LeaderboardItem
+            key={item.userId}
+            name={item.name || item.userId.toString()}
+            rank={i + 1}
+            score={item.score.total}
+            diff={item.score.diff}
+          />
+        ))}
       </AnimatePresence>
     </LeaderboardContainer>
   );
