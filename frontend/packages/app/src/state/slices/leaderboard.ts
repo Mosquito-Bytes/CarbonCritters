@@ -15,13 +15,13 @@ export interface LeaderboardState {
 }
 
 const addItems = createAction<{ users: LeaderboardState["items"] }>(
-	"ws/server/leaderboard",
+	"ws/server/leaderBoard",
 );
 
 const initialState = { items: [] } as LeaderboardState;
 
 const leaderboardSlice = createSlice({
-	name: "ws/server/leaderboard",
+	name: "ws/server/leaderBoard",
 	initialState,
 	extraReducers: (builder) => {
 		builder.addCase(addItems, (state, action) => {
