@@ -8,8 +8,6 @@ const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
-let counter = 0;
-
 function sendHeartbeatToAllClients(wss) {
   wss.clients.forEach((client) => {
     if (client.readyState === WebSocket.OPEN) {
@@ -26,18 +24,20 @@ const heartbeat = (wss) => {
   }, 10_000);
 };
 
-function mockUser() {
+function mockUser(opts) {
+    const { userId, score, name} = opts || {};
+
   return {
-    userId: faker.number.int({ min: 10, max: 1000 }),
-    name: faker.person.fullName(),
-    score: {
+    userId: userId || faker.number.int({ min: 10, max: 1000 }),
+    name: name || faker.person.fullName(),
+    score: score || {
       total: 0,
       diff: 0,
     },
   };
 }
 
-let defaultUsers = [mockUser(), mockUser(), mockUser(), mockUser()];
+let defaultUsers = [mockUser({userId: 0, score: { total: 0, diff: 0}}), mockUser({ userId: 1, score: { total: 10, diff: 10 } }), mockUser({ userId: 2, score: { total: -10, diff: -10 }}), mockUser()];
 
 function mockLeaderBoard() {
   const board = [...defaultUsers];
@@ -65,14 +65,13 @@ const leaderboard = (wss) => {
 
   setTimeout(() => {
     leaderboard(wss);
-  }, 30000);
+  }, 3000);
 };
 
 const handleMessage = (ws) => (message) => {
   try {
     const m = message.toString();
     const p = JSON.parse(m);
-    console.log(p);
 
     switch (true) {
       default:
