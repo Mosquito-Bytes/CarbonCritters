@@ -6,6 +6,9 @@ import mosquitobytes.carboncritters.model.LeaderBoard;
 import mosquitobytes.carboncritters.model.Profile;
 import mosquitobytes.carboncritters.repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -18,7 +21,8 @@ public class LeaderBoardService {
     public LeaderBoard getLeaderBoardUsers() throws JsonProcessingException {
         log.info("Inside LeaderBoardService.getLeaderBoardUsers method.");
 
-        Iterable<Profile> users = profileRepository.findAll();
+        var request = PageRequest.of(0, 5, Sort.by("points"));
+        Iterable<Profile> users = profileRepository.findAll(request);
         LeaderBoard leaderBoard = new LeaderBoard();
 
         for (Profile user : users) {

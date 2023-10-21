@@ -12,4 +12,5 @@ import java.util.ArrayList;
 public class LeaderBoard {
 
     ArrayList<Profile> users = new ArrayList<>();
+
 }

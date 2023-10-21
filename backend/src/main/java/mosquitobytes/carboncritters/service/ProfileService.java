@@ -23,7 +23,7 @@ public class ProfileService {
         var profile = getProfile(id);
         var newScore = profile.score().total() + delta;
 
-        var updatedProfile = new Profile(id, profile.userName(), new Score(newScore, delta));
+        var updatedProfile = new Profile(id, profile.userName(), newScore,new Score(newScore, delta));
 
         profileRepository.save(updatedProfile);
     }

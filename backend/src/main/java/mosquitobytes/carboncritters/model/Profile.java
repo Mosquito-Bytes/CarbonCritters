@@ -7,5 +7,6 @@ import org.springframework.data.annotation.Id;
 @Entity
 public record Profile(@Id @JsonProperty("userId") Long id,
                       @JsonProperty("name") String userName,
+                      double points,
                       Score score) {
 }
