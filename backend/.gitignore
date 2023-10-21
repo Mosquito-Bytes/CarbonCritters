@@ -23,3 +23,6 @@ build/
 
 ### Gradle ###
 .idea
+
+### MAC OS ###
+.DS_Store
