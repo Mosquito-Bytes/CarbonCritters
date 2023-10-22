@@ -80,6 +80,9 @@ public class CustomWebSocketHandler implements WebSocketHandler {
         }
 
         var session = activeSessions.get(sessionId);
+        if (session == null) {
+            return;
+        }
 
         sendUserInfo(userId, session);
     }
