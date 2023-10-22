@@ -1,4 +1,4 @@
-# CarbonCritters
+![Carbon Critters](./Banner.jpg)
 
 Built in two days at Collabothon 2023 in Sofia, Bulgaria.
 
