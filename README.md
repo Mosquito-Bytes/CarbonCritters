@@ -44,5 +44,21 @@ You can also change it to point at the locally running backend if you want to. W
 For the (mostly) full experience, keep it pointed at the deployed backend.
 
 ### Backend
+#### Prerequisites
+ - Java 17
+ - Configured access to [Google Datastore](https://cloud.google.com/datastore). The application uses the default credentials setup.
+   For more details please check the [Spring Cloud GCP documenation](https://googlecloudplatform.github.io/spring-cloud-gcp/4.8.0/reference/html/index.html#cloud-datastore-settings). Alternatively you can use [Datastore Emulator](https://googlecloudplatform.github.io/spring-cloud-gcp/4.8.0/reference/html/index.html#datastore-emulator-autoconfiguration).
 
-TBD
+#### Run
+
+In order to start the backend service locally run:
+
+    cd ./backend
+    ./gradlew bootRun
+
+on Linux/MacOS. Or on Windows:
+
+    cd backend
+    .\gradlew.bat bootRun
+
+The backend service is accessible on port 8080.
