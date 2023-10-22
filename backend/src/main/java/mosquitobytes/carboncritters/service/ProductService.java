@@ -11,6 +11,7 @@ import java.io.IOException;
 @Service
 public class ProductService {
 
+    public static final double BASELINE = 200.0;
     private final ConsumedProductRepository consumedProducts;
 
     private final ProfileService profileService;
@@ -32,7 +33,9 @@ public class ProductService {
 
         consumedProducts.save(consumedProduct);
 
-        profileService.updateScore(consumerId, consumedProduct.product().footprint());
+        var footprint = consumedProduct.product().footprint();
+        var score = BASELINE - footprint;
+        profileService.updateScore(consumerId, (int) score);
 
         try {
             webSocketHandler.sendLeaderBoardToAllActiveSessions();
