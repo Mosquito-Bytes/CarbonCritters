@@ -39,6 +39,7 @@ public class ProductService {
 
         try {
             webSocketHandler.sendLeaderBoardToAllActiveSessions();
+            webSocketHandler.sendUserInfo(consumerId.toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -19,7 +19,6 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -29,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class CustomWebSocketHandler implements WebSocketHandler {
 
     private final Map<String, WebSocketSession> activeSessions = new ConcurrentHashMap<>();
-    private final Map<String, String> sessionToProfileId = new ConcurrentHashMap<>();
+    private final Map<String, String> profileIdToSessionsId = new ConcurrentHashMap<>();
 
     @Autowired
     private LeaderBoardService leaderBoardService;
@@ -50,7 +49,7 @@ public class CustomWebSocketHandler implements WebSocketHandler {
         // Send the user back to the client
         sendUserInfo(userId.get(0), session);
 
-        sendLeaderBoard(session, false);
+        sendLeaderBoard(session);
     }
 
     @Override
@@ -62,20 +61,27 @@ public class CustomWebSocketHandler implements WebSocketHandler {
 
     public void sendLeaderBoardToAllActiveSessions() throws IOException {
         for (WebSocketSession activeSession : this.activeSessions.values()) {
-            sendLeaderBoard(activeSession, true);
+            sendLeaderBoard(activeSession);
         }
     }
 
-    public void sendLeaderBoard(WebSocketSession session, boolean sendUserUpdate) throws IOException {
+    public void sendLeaderBoard(WebSocketSession session) throws IOException {
         CustomWebSocketResponse<LeaderBoard> response = new CustomWebSocketResponse<LeaderBoard>();
         response.setType("ws/server/leaderBoard");
         response.setPayload(this.leaderBoardService.getLeaderBoardUsers());
         session.sendMessage(new TextMessage(convertToJson(response)));
 
-        if (sendUserUpdate) {
-            var userId = sessionToProfileId.get(session.getId());
-            sendUserInfo(userId, session);
+    }
+
+    public void sendUserInfo(String userId) throws IOException {
+        var sessionId = profileIdToSessionsId.get(userId);
+        if (sessionId == null) {
+            return;
         }
+
+        var session = activeSessions.get(sessionId);
+
+        sendUserInfo(userId, session);
     }
 
     private void sendUserInfo(String userId, WebSocketSession session) throws IOException {
@@ -83,7 +89,7 @@ public class CustomWebSocketHandler implements WebSocketHandler {
         response.setType("ws/server/user");
         response.setPayload(this.profileService.getProfile(Long.parseLong(userId)));
         session.sendMessage(new TextMessage(convertToJson(response)));
-        sessionToProfileId.put(session.getId(), userId);
+        profileIdToSessionsId.put(userId, session.getId());
     }
 
     private String convertToJson(CustomWebSocketResponse response) throws JsonProcessingException {
