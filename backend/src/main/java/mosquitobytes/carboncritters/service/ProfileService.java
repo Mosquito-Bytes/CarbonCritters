@@ -33,7 +33,8 @@ public class ProfileService {
         var profile = getProfile(id);
         var newScore = profile.score().total() + delta;
 
-        var updatedProfile = new Profile(id, profile.userName(), newScore,new Score(newScore, delta));
+        var updatedProfile = new Profile(id, profile.userName(), newScore,
+            new Score(newScore, delta), profile.critter());
 
         profileRepository.save(updatedProfile);
     }
@@ -51,7 +52,8 @@ public class ProfileService {
     }
 
     public void resetScore(Profile profile) {
-        var updatedProfile = new Profile(profile.id(), profile.userName(), 0.0, new Score(0.0, 0.0));
+        var updatedProfile = new Profile(profile.id(), profile.userName(), 0.0,
+            new Score(0.0, 0.0), profile.critter());
 
         profileRepository.save(updatedProfile);
     }
