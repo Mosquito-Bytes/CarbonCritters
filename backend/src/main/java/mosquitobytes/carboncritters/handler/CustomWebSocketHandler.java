@@ -22,12 +22,14 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Configuration
 @Slf4j
 public class CustomWebSocketHandler implements WebSocketHandler {
 
-    private final Map<String, WebSocketSession> activeSessions = new HashMap<>();
+    private final Map<String, WebSocketSession> activeSessions = new ConcurrentHashMap<>();
+    private final Map<String, String> sessionToProfileId = new ConcurrentHashMap<>();
 
     @Autowired
     private LeaderBoardService leaderBoardService;
@@ -46,12 +48,9 @@ public class CustomWebSocketHandler implements WebSocketHandler {
         List<String> userId = parameters.get("userId");
 
         // Send the user back to the client
-        CustomWebSocketResponse<Profile> response = new CustomWebSocketResponse<Profile>();
-        response.setType("ws/server/user");
-        response.setPayload(this.profileService.getProfile(Long.parseLong(userId.get(0))));
-        session.sendMessage(new TextMessage(convertToJson(response)));
+        sendUserInfo(userId.get(0), session);
 
-        sendLeaderBoard(session);
+        sendLeaderBoard(session, false);
     }
 
     @Override
@@ -63,15 +62,28 @@ public class CustomWebSocketHandler implements WebSocketHandler {
 
     public void sendLeaderBoardToAllActiveSessions() throws IOException {
         for (WebSocketSession activeSession : this.activeSessions.values()) {
-            sendLeaderBoard(activeSession);
+            sendLeaderBoard(activeSession, true);
         }
     }
 
-    public void sendLeaderBoard(WebSocketSession session) throws IOException {
+    public void sendLeaderBoard(WebSocketSession session, boolean sendUserUpdate) throws IOException {
         CustomWebSocketResponse<LeaderBoard> response = new CustomWebSocketResponse<LeaderBoard>();
         response.setType("ws/server/leaderBoard");
         response.setPayload(this.leaderBoardService.getLeaderBoardUsers());
         session.sendMessage(new TextMessage(convertToJson(response)));
+
+        if (sendUserUpdate) {
+            var userId = sessionToProfileId.get(session.getId());
+            sendUserInfo(userId, session);
+        }
+    }
+
+    private void sendUserInfo(String userId, WebSocketSession session) throws IOException {
+        CustomWebSocketResponse<Profile> response = new CustomWebSocketResponse<Profile>();
+        response.setType("ws/server/user");
+        response.setPayload(this.profileService.getProfile(Long.parseLong(userId)));
+        session.sendMessage(new TextMessage(convertToJson(response)));
+        sessionToProfileId.put(session.getId(), userId);
     }
 
     private String convertToJson(CustomWebSocketResponse response) throws JsonProcessingException {
