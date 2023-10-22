@@ -11,7 +11,7 @@ import java.io.IOException;
 @Service
 public class ProductService {
 
-    public static final double BASELINE = 200.0;
+    public static final double BASELINE = 212.0;
     private final ConsumedProductRepository consumedProducts;
 
     private final ProfileService profileService;

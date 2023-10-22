@@ -21,7 +21,7 @@ public class LeaderBoardService {
     public LeaderBoard getLeaderBoardUsers() throws JsonProcessingException {
         log.info("Inside LeaderBoardService.getLeaderBoardUsers method.");
 
-        var request = PageRequest.of(0, 5, Sort.by("points"));
+        var request = PageRequest.of(0, 5, Sort.by("points").descending());
         Iterable<Profile> users = profileRepository.findAll(request);
         LeaderBoard leaderBoard = new LeaderBoard();
 
