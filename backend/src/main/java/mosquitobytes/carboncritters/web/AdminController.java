@@ -2,10 +2,7 @@ package mosquitobytes.carboncritters.web;
 
 import mosquitobytes.carboncritters.service.ProfileService;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin")
@@ -22,5 +19,16 @@ public class AdminController {
     public void resetScore() {
         profileService.resetScore();
     }
+
+    @PostMapping("/create-user")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void createUser(@RequestBody CreateUserRequest request) {
+        profileService.createProfile(request.userName(), request.critterName());
+    }
+
+    private record CreateUserRequest(
+        String userName, String critterName
+    )
+    {}
 
 }

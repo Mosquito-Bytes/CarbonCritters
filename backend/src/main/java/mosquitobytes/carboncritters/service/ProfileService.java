@@ -2,6 +2,7 @@ package mosquitobytes.carboncritters.service;
 
 import lombok.extern.slf4j.Slf4j;
 import mosquitobytes.carboncritters.handler.CustomWebSocketHandler;
+import mosquitobytes.carboncritters.model.Critter;
 import mosquitobytes.carboncritters.model.Profile;
 import mosquitobytes.carboncritters.model.Score;
 import mosquitobytes.carboncritters.repository.ProfileRepository;
@@ -27,6 +28,13 @@ public class ProfileService {
         log.info("Inside Profile.getProfile method.");
 
         return profileRepository.findById(id).orElse(null);
+    }
+
+    public void createProfile(String userName, String critterName) {
+        var profile = new Profile(null, userName,
+                0, new Score(0, 0),
+                new Critter(1l, critterName));
+        profileRepository.save(profile);
     }
 
     public void updateScore(Long id, double delta) {
