@@ -6,7 +6,8 @@ import mosquitobytes.carboncritters.model.Critter;
 import mosquitobytes.carboncritters.model.Profile;
 import mosquitobytes.carboncritters.model.Score;
 import mosquitobytes.carboncritters.repository.ProfileRepository;
-import org.springframework.context.annotation.Lazy;
+
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -15,12 +16,12 @@ import java.io.IOException;
 @Service
 public class ProfileService {
 
-    private final CustomWebSocketHandler webSocketHandler;
+    private final ObjectProvider<CustomWebSocketHandler> webSocketHandlerProvider;
 
     private final ProfileRepository profileRepository;
 
-    public ProfileService(@Lazy CustomWebSocketHandler webSocketHandler, ProfileRepository profileRepository) {
-        this.webSocketHandler = webSocketHandler;
+    public ProfileService(ObjectProvider<CustomWebSocketHandler> webSocketHandlerProvider, ProfileRepository profileRepository) {
+        this.webSocketHandlerProvider = webSocketHandlerProvider;
         this.profileRepository = profileRepository;
     }
 
@@ -53,6 +54,7 @@ public class ProfileService {
         profiles.forEach(this::resetScore);
 
         try {
+            var webSocketHandler = webSocketHandlerProvider.getIfAvailable();
             webSocketHandler.sendLeaderBoardToAllActiveSessions();
         } catch (IOException e) {
             throw new RuntimeException(e);
