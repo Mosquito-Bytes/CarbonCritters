@@ -2,6 +2,7 @@ plugins {
 	java
 	id("org.springframework.boot") version "3.1.5"
 	id("io.spring.dependency-management") version "1.1.3"
+    id("org.graalvm.buildtools.native") version "0.9.28"
 }
 
 group = "mosquitobytes"
@@ -16,7 +17,7 @@ repositories {
 }
 
 dependencies {
-	implementation(platform("com.google.cloud:spring-cloud-gcp-dependencies:4.8.0"))
+	implementation(platform("com.google.cloud:spring-cloud-gcp-dependencies:4.8.4"))
 
 	// implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-web")
