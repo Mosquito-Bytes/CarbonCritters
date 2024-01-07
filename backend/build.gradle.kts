@@ -23,6 +23,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-websocket")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("com.google.cloud:spring-cloud-gcp-starter-data-datastore")
+	implementation("com.google.cloud:spring-cloud-gcp-starter-trace")
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
 

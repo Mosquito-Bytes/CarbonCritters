@@ -10,6 +10,8 @@ import mosquitobytes.carboncritters.repository.ProfileRepository;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.stereotype.Service;
 
+import io.micrometer.observation.annotation.Observed;
+
 import java.io.IOException;
 
 @Slf4j
@@ -48,6 +50,7 @@ public class ProfileService {
         profileRepository.save(updatedProfile);
     }
 
+    @Observed(contextualName = "reset-score-service")
     public void resetScore() {
         var profiles = profileRepository.findAll();
 
