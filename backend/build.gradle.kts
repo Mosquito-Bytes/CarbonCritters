@@ -20,6 +20,7 @@ dependencies {
 
 	// implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-aop")
 	implementation("org.springframework.boot:spring-boot-starter-websocket")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("com.google.cloud:spring-cloud-gcp-starter-data-datastore")
